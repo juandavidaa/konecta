@@ -13,6 +13,9 @@
 </head>
 <body>
 	<div ng-app="products-app" ng-controller="products-controller">
+		<div class="loading" ng-if="loading">
+			<i class="fa fa-spinner fa-spin fa-5x fa-fw"></i>
+		</div>
 <div class="container" >
         <div class="table-wrapper">
             <div class="table-title">
@@ -21,7 +24,7 @@
 						<h2>Productos</h2>
 					</div>
 					<div class="col-sm-6">
-						<a href="#addEmployeeModal" ng-click="modalTitle = 'Agregar Usuario'" class="btn btn-success" data-toggle="modal"><i class="fa fa-plus"></i> <span>Agregar Usuario</span></a>
+						<a href="#addProductModal" ng-click="modalTitle = 'Agregar Usuario'" class="btn btn-success" data-toggle="modal"><i class="fa fa-plus"></i> <span>Agregar Usuario</span></a>
 					</div>
                 </div>
 			</div>
@@ -29,12 +32,13 @@
 				<table class="table table-striped table-hover">
 					<thead>
 						<tr>
+							<th>Vender</th>
 							<th>Nombre</th>
 							<th>Referencia</th>
 							<th>Precio</th>
 							<th>Peso</th>
 							<th>Categoria</th>
-							<th>Categoria</th>
+							<th>stock</th>
 							<th>Fecha de Creación</th>
 							<th>Fecha última venta</th>
 							<th>Acciones</th>
@@ -42,6 +46,7 @@
 					</thead>
 					<tbody>
 						<tr ng-repeat="(key, product) in products">
+							<td><a href="#" ng-click="sell(product.id, key);"><i class="fa fa-shopping-cart"></i></a></td>
 							<td>{{product.name}}</td>
 							<td>{{product.reference}}</td>
 							<td>{{product.price}}</td>
@@ -51,8 +56,8 @@
 							<td>{{product.created_at}}</td>
 							<td>{{product.sold_at}}</td>
 							<td>
-								<a href="#addProductModal" ng-click="editProduct(product);" class="edit" data-toggle="modal"><i class="fa fa-pencil"></i></a>
-								<a ng-click="deleteProduct(product.id, key);" class="delete" data-toggle="modal"><i class="fa fa-trash"></i></a>
+								<a href="#addProductModal" ng-click="editProduct(product, key);" class="edit" data-toggle="modal"><i class="fa fa-pencil"></i></a>
+								<a href="#" ng-click="deleteProduct(product.id, key);" class="delete"><i class="fa fa-trash"></i></a>
 							</td>
 						</tr>
 						
@@ -63,7 +68,7 @@
         </div>
     </div>
 	<!-- Modal HTML -->
-	<div id="addEmployeeModal" class="modal fade">
+	<div id="addProductModal" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form ng-submit="saveProduct()">
@@ -90,7 +95,7 @@
 						</div>
 						<div class="form-group">
 							<label>Categoria</label>
-							<select ng-model="tempProduct.category_id" class="form-control" required>
+							<select ng-model="tempProduct.category_id" class="form-control" ng-options="value.id as value.name for (key, value) in categories" required>
 								
 							</select>
 						</div>

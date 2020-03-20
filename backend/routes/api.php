@@ -13,5 +13,8 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::apiResource('product', 'ProductController');
+    Route::patch('product/{id}', 'ProductController@sell');
+    Route::apiResource('product', 'ProductController');
+    Route::get('category', 'CategoryController@index');
+
 

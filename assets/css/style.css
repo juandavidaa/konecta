@@ -217,3 +217,17 @@
 	.modal form label {
 		font-weight: normal;
 	}	
+	.loading{
+		position: absolute;
+		height: 100%;
+		width: 100%;
+		background: black;
+		z-index: 99999;
+		opacity: 0.9;
+		font-size: 80px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		top:0px;
+		color:#92ef92;
+	}
