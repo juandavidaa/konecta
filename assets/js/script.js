@@ -1,43 +1,48 @@
-var app = angular.module('app-users', []);
-app.controller('app-controller', ['$scope', '$http', function($scope, $http){
+var app = angular.module('products-app', []);
+app.controller('products-controller', ['$scope', '$http', function($scope, $http){
 
-    $('#addEmployeeModal').on('hide.bs.modal', function (event) {
-        $scope.tempUser = {};
+    $('#addProductModal').on('hide.bs.modal', function (event) {
+        $scope.tempProduct = {};
     });
-    $scope.users = [];
-    $scope.modalTitle = 'Agregar Usuario';
+    $scope.products = [];
+
+    //con esta variable controlare el titulo de la modal
+    $scope.modalTitle = 'Agregar Producto';
+
+
+    //metodo encargado de obtener todos los productos en la base de datos
     $scope.get = () => {
         $http({
             method: 'GET',
             url: 'get',
         }).then((response) => {
-            $scope.users = response.data;
+            $scope.products = response.data;
         });
     }
     $scope.get();
-    $scope.saveUser = () => {
+    $scope.saveProduct = () => {
         let tmpUrl = 'add';
-        if($scope.tempUser.id) tmpUrl = 'edit'
+        if($scope.tempProduct.id) tmpUrl = 'edit'
         $http({
             method: 'POST',
             url: tmpUrl,
-            data: $scope.tempUser
+            data: $scope.tempProduct
         }).then(
             (response) => {
                 if(response.data.success){
                     if(tmpUrl == 'add'){
-                        $scope.tempUser.id = response.data.lastId;
-                        $scope.users.unshift($scope.tempUser);
+                        $scope.tempProduct.id = response.data.lastId;
+                        $scope.products.unshift($scope.tempProduct);
                     }
                     iziToast.success({
                         title: 'OK',
-                        message: 'El usuario ha sido guardado satisfactoriamente',
+                        message: 'El producto ha sido guardado satisfactoriamente',
                     });
                     $('#addEmployeeModal').modal('hide');
                 }else{
                     iziToast.error({
                         title: 'OK',
-                        message: 'El usuario no se ha podido guardar, por favor intente nuevamente o comuniquese con el área de soporte',
+                        message: 'El producto no se ha podido guardar, por favor intente nuevamente o comuniquese con el área de soporte',
                     });
                 } 
             },
@@ -46,28 +51,28 @@ app.controller('app-controller', ['$scope', '$http', function($scope, $http){
             }
         )
     }
-    $scope.editUser = (user) => {
-        $scope.modalTitle = 'Editar Usuario';
-        $scope.tempUser = user;
+    $scope.editProduct = (product) => {
+        $scope.modalTitle = 'Editar Producto';
+        $scope.tempProduct = product;
     }
 
-    $scope.deleteUser = (id, key) => {
+    $scope.deleteProduct = (id, key) => {
         $http({
             method: 'DELETE',
             url: 'delete',
             data: id
         }).then((response) => {
             if(response.data.success){
-                $scope.users.splice(key, 1);
+                $scope.products.splice(key, 1);
                 iziToast.success({
                     title: 'OK',
-                    message: 'El usuario ha sido Eliminado',
+                    message: 'El producto ha sido Eliminado',
                 });
 
             }else{
                 iziToast.error({
                     title: 'OK',
-                    message: 'El usuario no se ha podido Eliminar, por favor intente nuevamente o comuniquese con el área de soporte',
+                    message: 'El producto no se ha podido Eliminar, por favor intente nuevamente o comuniquese con el área de soporte',
                 });
             } 
         })
