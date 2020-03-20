@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use App\Product;
 use Illuminate\Http\Request;
-
+use Carbon\Carbon;
 class ProductController extends Controller
 {
     /**
@@ -13,6 +13,7 @@ class ProductController extends Controller
      */
     public function index()
     {
+        //return response()->json(['data' => $timezone]);
         return Product::with('category')->get();
     }
 
@@ -27,6 +28,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $product = new Product();
+        $product->created_at = date('yy-m-d H:i:s');
         $product->name = request('name');
         $product->reference = request('reference');
         $product->price = request('price');
@@ -88,9 +90,9 @@ class ProductController extends Controller
         $product = Product::find($id);
         if($product->stock > 0){
             $product->stock--;
-            $product->sold_at = date('Y-m-d H:i:s');
-            return response()->json(['success' => $product->save()]);
+            $product->sold_at = date('yy-m-d H:i:s');
+            return response()->json(['success' => $product->save(), 'data' => $product->sold_at]);
         }
-        return response()->json(['success' => false, 'data' => $product->sold_at]);
+        return response()->json(['success' => false]);
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 namespace App;
-
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
@@ -15,7 +15,7 @@ class Product extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'reference', 'price', 'weight', 'stock'
+        'name', 'reference', 'price', 'weight', 'stock', 'sold_at'
     ];
 
     /**
@@ -23,12 +23,11 @@ class Product extends Model
      *
      * @var array
      */
-    protected $casts = [
-        'sold_at' => 'datetime',
-    ];
+
 
 
     public function category(){
         return $this->belongsTo(Category::class);
     }
+
 }
